@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DW Portal</title>
+
+    <style>
+        /* --- Configuración General --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- TEMA (Basado en la imagen) --- */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #111; /* Fondo muy oscuro */
+            color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* --- Contenedor Principal --- */
+        .page-wrapper {
+            display: flex; /* Sidebar al lado del contenido */
+            width: 100%;
+            max-width: 1400px;
+            height: 80vh; /* Altura fija para el diseño */
+            min-height: 700px;
+            box-shadow: 0 0 30px rgba(230, 0, 18, 0.2); /* Sombra roja */
+            border: 1px solid #333;
+            overflow: hidden; /* Importante para el layout */
+        }
+
+        /* --- 1. Barra Lateral (Roja) --- */
+        .sidebar {
+            width: 280px; /* Ancho de la barra */
+            background-color: #4a0000; /* Rojo oscuro de la imagen */
+            color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            border-right: 2px solid #E60012; /* Acento rojo brillante */
+            z-index: 5;
+        }
+        
+        /* --- Contenedor de Sesión (Arriba en Sidebar) --- */
+        .sidebar-auth {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 1.5rem; 
+        }
+        .auth-btn {
+            text-decoration: none;
+            color: #ccc;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            border: 1px solid #ccc;
+            background-color: rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .btn-register {
+            background-color: #E60012;
+            color: #ffffff;
+            border-color: #E60012;
+        }
+        .btn-register:hover {
+            background-color: #c00;
+            border-color: #c00;
+        }
+        .btn-login:hover {
+            background-color: #E60012;
+            border-color: #E60012;
+        }
+        .welcome-message {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            word-wrap: break-word;
+        }
+        .btn-logout {
+            color: #E60012;
+            border-color: #E60012;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        .btn-logout:hover {
+            background-color: #E60012;
+            color: #ffffff;
+        }
+
+        .sidebar-title {
+            font-size: 3rem; 
+            color: #fff;
+            text-align: center;
+            line-height: 1.0;
+            margin: 0.5rem auto 1.5rem auto; 
+            letter-spacing: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* Navegación Principal (Abajo en Sidebar) */
+        .main-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem; 
+            margin-top: auto; /* Empuja la navegación al fondo */
+        }
+        .nav-link {
+            text-decoration: none;
+            color: #ccc;
+            font-size: 0.9rem;
+            padding: 6px 10px;
+            border: 1px solid #888;
+            border-radius: 5px;
+            text-align: center;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: #E60012;
+            color: #fff;
+            border-color: #E60012;
+        }
+
+        /* --- 2. Área de Contenido Principal --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background-image: url('https://a.files.bbci.co.uk/worldservice/live/assets/images/2015/07/27/150727125257_eeuu_detroit_escultura_satanica_624x351_ap.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .top-left-text {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: #fff;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            max-width: 200px;
+            text-shadow: 0 0 5px #000, 0 0 5px #000;
+            z-index: 10;
+        }
+
+        .top-right-qr {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .qr-code-fake {
+            width: 100px;
+            height: 100px;
+            border: 4px solid white;
+        }
+
+        .qr-url {
+            color: #fff;
+            font-size: 0.9rem;
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 0 0 5px #000, 0 0 5px #000;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+
+        <!-- --- 1. Barra Lateral (Roja) --- -->
+        <aside class="sidebar">
+
+            <div class="sidebar-auth" id="auth-container">
+                <!-- El script JS pondrá los botones de login/registro o el saludo aquí -->
+            </div>
+            
+            <h1 class="sidebar-title">D<br>E<br>E<br>P<br><br>W<br>E<br>P</h1>
+
+            <!-- Navegación Principal (Abajo) -->
+            <nav class="main-nav">
+                <!-- CAMBIO DE ENLACES -->
+                <a href="reserva.html" class="nav-link">Comprar</a>
+                <a href="opinion.html" class="nav-link">Formulario</a>
+            </nav>
+
+        </aside>
+
+        <!-- --- 2. Contenido Principal (Imagen de Fondo) --- -->
+        <main class="main-content">
+
+            <div class="top-left-text">
+                Copia el URL o Escanea el link para comenzar la diversion
+            </div>
+            
+            <div class="top-right-qr">
+                <img src="https://ih1.redbubble.net/image.13380526.2417/raf,360x360,075,t,fafafa:ca443f4786.jpg" alt="QR Code" class="qr-code-fake">
+                <p class="qr-url">https.torproject.org/es/download/</p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ===== SCRIPT DE SESIÓN ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = sessionStorage.getItem('userName');
+            const authContainer = document.getElementById('auth-container'); 
+            
+            if (userName) {
+                authContainer.innerHTML = `
+                    <span class="welcome-message">Hola, ${userName.trim()}</span>
+                    <a href="#" id="logout-btn" class="auth-btn btn-logout">Salir</a>
+                `;
+                
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sessionStorage.removeItem('userName');
+                    window.location.reload();
+                });
+            } else {
+                authContainer.innerHTML = `
+                    <!-- CAMBIO DE ENLACES -->
+                    <a href="ingresar.html" class="auth-btn btn-login">Ingresar</a>
+                    <a href="unete.html" class="auth-btn btn-register">Registrarse</a>
+                `;
+            }
+        });
+    </script>
+    <!-- ===== FIN SCRIPT ===== -->
+
+</body>
+</html>
+

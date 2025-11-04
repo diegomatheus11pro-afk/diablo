@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DW Portal: Formulario</title>
+    <style>
+        /* --- Configuración General --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #111;
+            color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* --- Contenedor Principal --- */
+        .page-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1400px;
+            height: 80vh;
+            min-height: 700px;
+            box-shadow: 0 0 30px rgba(230, 0, 18, 0.2);
+            border: 1px solid #333;
+            overflow: hidden;
+        }
+
+        /* --- 1. Barra Lateral (Roja) --- */
+        .sidebar {
+            width: 280px;
+            background-color: #4a0000;
+            color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            border-right: 2px solid #E60012;
+            z-index: 5;
+        }
+        
+        .sidebar-auth {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 1.5rem; 
+        }
+        .auth-btn {
+            text-decoration: none;
+            color: #ccc;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            border: 1px solid #ccc;
+            background-color: rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .btn-register {
+            background-color: #E60012;
+            color: #ffffff;
+            border-color: #E60012;
+        }
+        .btn-register:hover {
+            background-color: #c00;
+            border-color: #c00;
+        }
+        .btn-login:hover {
+            background-color: #E60012;
+            border-color: #E60012;
+        }
+        .welcome-message {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            word-wrap: break-word;
+        }
+        .btn-logout {
+            color: #E60012;
+            border-color: #E60012;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        .btn-logout:hover {
+            background-color: #E60012;
+            color: #ffffff;
+        }
+
+        .sidebar-title {
+            font-size: 3rem; 
+            color: #fff;
+            text-align: center;
+            line-height: 1.0;
+            margin: 0.5rem auto 1.5rem auto; 
+            letter-spacing: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .main-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem; 
+            margin-top: auto;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: #ccc;
+            font-size: 0.9rem;
+            padding: 6px 10px;
+            border: 1px solid #888;
+            border-radius: 5px;
+            text-align: center;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: #E60012;
+            color: #fff;
+            border-color: #E60012;
+        }
+
+        /* --- 2. Área de Contenido Principal (Formulario) --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra el contenido */
+            overflow-y: auto;
+            background-color: #1a1a1a;
+        }
+        
+        .main-content h2 {
+            text-align: center;
+            color: #E60012;
+            font-size: 28px;
+            margin-bottom: 1.5rem;
+        }
+
+        .success-message {
+            color: #fff;
+            background-color: #8b0000;
+            border: 1px solid #E60012;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            display: none;
+        }
+        .success-message h3 { margin-bottom: 10px; }
+        .success-message a {
+            background-color: #E60012;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        .success-message a:hover { background-color: #c00; }
+
+        .form-box {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+            border: 1px solid #333;
+            background-color: rgba(0,0,0,0.3);
+        }
+        .form-group { display: flex; flex-direction: column; margin-bottom: 1rem; }
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #ccc;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px 15px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #E60012;
+            box-shadow: 0 0 0 2px rgba(230,0,18,0.2);
+        }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .form-group-options { display: flex; flex-direction: column; gap: 10px; }
+        .form-group-options .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #333;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #555;
+        }
+        .form-group-options input[type="radio"],
+        .form-group-options input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #E60012;
+        }
+        .form-button {
+            background-color: #E60012;
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .form-button:hover { background-color: #c00; }
+        
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+
+        <!-- --- 1. Barra Lateral (Roja) --- -->
+        <aside class="sidebar">
+
+            <div class="sidebar-auth" id="auth-container">
+                <!-- El script JS pondrá los botones de login/registro o el saludo aquí -->
+            </div>
+            
+            <h1 class="sidebar-title">D<br>E<br>E<br>P<br><br>W<br>E<br>P</h1>
+
+            <nav class="main-nav">
+                <a href="reserva.html" class="nav-link">Comprar</a>
+                <!-- Marca "Formulario" como activa -->
+                <a href="opinion.html" class="nav-link active">Formulario</a>
+            </nav>
+
+        </aside>
+
+        <!-- --- 2. Contenido Principal (Formulario) --- -->
+        <main class="main-content">
+
+            <h2>Formulario de Opinión</h2>
+
+            <div id="success-message" class="success-message">
+                <h3>¡Opinión Enviada!</h3>
+                <p>Tus respuestas han sido registradas anónimamente. Gracias por tu tiempo.</p>
+                <a href="index.html">Volver al Inicio</a>
+            </div>
+
+            <form id="compra-form" class="form-box">
+                
+                <div class="form-group">
+                    <label>1. ¿Cómo calificarías tu experiencia?</label>
+                    <div class="form-group-options">
+                        <label class="option"><input type="radio" name="experiencia" value="5"> 5 (Excelente)</label>
+                        <label class="option"><input type="radio" name="experiencia" value="3"> 3 (Regular)</label>
+                        <label class="option"><input type="radio" name="experiencia" value="1"> 1 (Mala)</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tipo-contenido">2. ¿Qué tipo de contenido te interesa?</label>
+                    <select id="tipo-contenido" name="tipo-contenido" required>
+                        <option value="">Selecciona uno...</option>
+                        <option value="tecnologia">Tecnología</option>
+                        <option value="arte">Arte Oscuro</option>
+                        <option value="historias">Historias</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>3. ¿Qué secciones visitas más? (Marca varias)</label>
+                    <div class="form-group-options">
+                        <label class="option"><input type="checkbox" name="extra" value="sec1"> Sección A</label>
+                        <label class="option"><input type="checkbox" name="extra" value="sec2"> Sección B</label>
+                        <label class="option"><input type="checkbox" name="extra" value="sec3"> Sección C</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="comentarios">4. Comentarios o sugerencias:</label>
+                    <textarea id="comentarios" name="comentarios" placeholder="Escribe tus sugerencias aquí..."></textarea>
+                </div>
+                
+                <button type="submit" class="form-button">Enviar Opinión</button>
+                
+            </form>
+
+        </main>
+    </div>
+
+    <!-- SCRIPT DE SESIÓN -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = sessionStorage.getItem('userName');
+            const authContainer = document.getElementById('auth-container'); 
+            
+            if (userName) {
+                authContainer.innerHTML = `
+                    <span class="welcome-message">Hola, ${userName.trim()}</span>
+                    <a href="#" id="logout-btn" class="auth-btn btn-logout">Salir</a>
+                `;
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sessionStorage.removeItem('userName');
+                    window.location.reload();
+                });
+            } else {
+                authContainer.innerHTML = `
+                    <a href="ingresar.html" class="auth-btn btn-login">Ingresar</a>
+                    <a href="unete.html" class="auth-btn btn-register">Registrarse</a>
+                `;
+            }
+        });
+    </script>
+    <!-- SCRIPT DE FORMULARIO -->
+    <script>
+        document.getElementById('compra-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = document.getElementById('compra-form');
+            const successMessage = document.getElementById('success-message');
+            
+            successMessage.style.display = 'block';
+            form.style.display = 'none';
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>
